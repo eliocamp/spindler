@@ -50,7 +50,7 @@ birds$publish()
 # Oh, no I made a typo. Quick, delete the whole thing!
 birds$destroy()
 
-# Lets start over
+# Let's start over
 birds$clear()$
   add_post("Nooo! I had an awesome thread about birds, but I messed up.")$
   add_post("So here's the jist of it: birds rock and they are better than monkeys!")$

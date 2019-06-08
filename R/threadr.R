@@ -36,7 +36,7 @@
 #' # Oh, no I made a typo. Quick, delete the whole thing!
 #' birds$destroy()
 #'
-#' # Lets start over
+#' # Let's start over
 #' birds$clear()$
 #'   add_post("Nooo! I had an awesome thread about birds, but I messed up.")$
 #'   add_post("So here's the jist of it: birds rock and they are better than monkeys!")$
@@ -95,11 +95,19 @@ thread <- R6::R6Class("tweet_thread", list(
 
   get_url = function(n = 1) {
     id <- self$post_list$id[n]
-    paste0("https://twitter.com/", rtweet:::home_user(), "/status/", id)
+    if (!is.na(id)) {
+      paste0("https://twitter.com/", rtweet:::home_user(), "/status/", id)
+    } else {
+      NA
+    }
   },
 
   show = function(n = 1) {
-    browseURL(self$get_url(n))
+    url <- self$get_url(n)
+    if (is.na(url)) {
+      stop("Tweet not published yer.")
+    }
+    browseURL(url)
     invisible(self)
   },
 

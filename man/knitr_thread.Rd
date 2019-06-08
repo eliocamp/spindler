@@ -4,9 +4,11 @@
 \alias{knitr_thread}
 \title{Setup a knitr document to compose a thread}
 \usage{
-knitr_thread(publish = FALSE)
+knitr_thread(thread, publish = FALSE)
 }
 \arguments{
+\item{thread}{thread object to populate.}
+
 \item{publish}{Whether the resulting thread should be published.}
 }
 \description{
@@ -16,4 +18,18 @@ Sets up hooks in a knitr document so that it will produce a twitter thread.
 This function should be called in the first(ish) chunks of a knitr document.
 To add a chunk to a thread, add the option \code{tw_status = "Status of the tweet"}
 to it. The first figure returned by the chunk (if any) will be attached as media.
+}
+\examples{
+\dontrun{
+
+```{r, setup}
+this_thread <- spindler::thread$new()
+spindler::knitr_thread(this_thread, TRUE)
+```
+
+```{r, tw_status = "The relationship between pressure and temperature is cool!"}
+plot(pressure)
+```
+}
+
 }
