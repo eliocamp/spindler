@@ -1,6 +1,3 @@
----
-output: github_document
----
 
 # spindler
 
@@ -50,6 +47,7 @@ birds$destroy()
 ```
 
 Let's start over
+
 ```{r, eval=FALSE}
 birds$clear()$
   add_post("Nooo! I had an awesome thread about birds, but I messed up.")$
@@ -64,11 +62,31 @@ birds$show()
 
 ### From knitr
 
-Just add 
+Create a new thread object and use `knitr_thread()` 
 
 ````
 ```{r, setup}
 this_thread <- spindler::thread$new()
-spindler::knitr_thread(this_thread, TRUE)
+spindler::knitr_thread(this_thread, publish = TRUE)
 ```
 ````
+
+Now if you add the `tw_status` option to a chunk with the text you want to tweet, 
+it will be added to the thread along with its first figure (if there is one) during
+the rendering process.
+
+````
+```{r, tw_status = "The relationship between pressure and temperature is cool!"}
+plot(pressure)
+```
+````
+
+You can also use `this_thread$new_post()` inside your knitr document to add posts 
+manually. 
+
+When the document is done rendering, your thread with be published and shown in a 
+browser window. 
+
+**Be careful**! Since the rendering process runs on an independent session, you won't
+get the thread object. This means that you cannot use `this_thread$destroy()` to 
+remove all the new posts, you'll need to do it manually.
