@@ -6,6 +6,8 @@
 \alias{spindler-package}
 \title{spindler: Create and Publish Twitter Threads}
 \description{
+\if{html}{\figure{logo.png}{options: align='right'}}
+
 Publish Twitter threads from your R session or from a rmarkdown document.
 }
 \section{Setup}{
