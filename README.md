@@ -1,5 +1,5 @@
 
-# spindler
+# spindler <img src='man/figures/logo.png' align="right" height="276" />
 
 <!-- badges: start -->
 <!-- badges: end -->
