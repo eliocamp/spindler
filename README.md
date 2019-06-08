@@ -8,7 +8,7 @@ The goal of spindler is to publish Twitter threads based on an rmarkdown documen
 
 ## Installation
 
-You can install 
+You can install the development version from [GitHub](https://github.com) with:
 
 <!-- the released version of spindler from [CRAN](https://CRAN.R-project.org) with:
 
@@ -16,7 +16,7 @@ You can install
 install.packages("spindler")
 ```
 
-And  --> the development version from [GitHub](https://github.com/) with:
+And  --> 
 
 ``` r
 # install.packages("devtools")
