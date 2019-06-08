@@ -52,7 +52,7 @@ Let's start over
 birds$clear()$
   add_post("Nooo! I had an awesome thread about birds, but I messed up.")$
   add_post("So here's the jist of it: birds rock and they are better than monkeys!")$
-  publish
+  publish()
 ```
 
 Look at the finished product
