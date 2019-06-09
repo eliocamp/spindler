@@ -24,7 +24,7 @@
 #' ```
 #' }
 #'
-#' @export
+# #' @export
 knitr_thread <- function(thread, publish = FALSE) {
   if (!requireNamespace("knitr", quietly = TRUE)) {
     stop("Need to install knitr.")

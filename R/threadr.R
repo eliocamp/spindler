@@ -2,27 +2,34 @@
 #'
 #' Creates a twitter thread object that can be populated with posts, published and destroyed.
 #'
-#' @section Creating:
-#' You can create a new thread with `thread$new()`. No parameters necessary.
+#' @usage
+#' thread$new(tag = NULL, publish = FALSE)
+#' thread$add_post(status, media = NULL)
+#' thread$clear()
+#' thread$publish()
+#' thread$show(n = 1)
+#' thread$get_url(n = 1)
+#' thread$get_posts()
+#' thread$destroy()
 #'
-#' @section Populating:
-#' Each post is added in order with `thread$add_post(status, media)`. Where `status`
-#' is a length one character vector and media is a length one character vector with
-#' the path to the media that will be uploaded.
+#' @param tag String that can be used as a chunk option inside a rmarkdown document
+#' to populate the thread (see Examples.)
+#' @param publish Wheter to publish the thread when finishing rendering. Only used
+#' when rendering a rmarkdown document.
+#' @param status Text to be tweeted.
+#' @param media Path to an image or video that will be attached to the tweet.
+#' @param n Number of post in thread to show in browser or get url from.
 #'
-#' @section Cleaning up:
-#' If you made a mistake or want to start over for some reason, use `thread$clear()`.
+#' @details
+#' The basic workflow is to create a new thread object with \code{thread$new()} and
+#' then populate it with \code{thread$add_post()}. Once you are happy with it, publish
+#' it to Tweeter with \code{thread$publish()}. If you want to "unpublish" it, use
+#' \code{thread$destroy()}. This will delete each post on Twitter, but they will
+#' still be saved on your thread object. Use \code{thread$clear()} to delete them.
 #'
-#' @section Publishing:
-#' When you are happy with how your thread has turned up, publish it to Twitter
-#' with `thread$publish()`. The url of each tweet can be retrieved with `thread$get_url()`.
-#'
-#' To view the result, use `thread$show()`.
-#'
-#' @section Deleting:
-#' To delete the thread from your timeline, use `thread$destroy()`. This will
-#' delete each post on Twitter, but it will still be saved on your thread object.
-#'
+#' To view the list of posts currently on your thread, use \code{thread$get_posts()}.
+#' Once published, you can get the url of each post with \code{thread$get_url()} or
+#' open it up in a browser session with \code{thread$show()}.
 #'
 #' @examples
 #' \dontrun{
@@ -44,18 +51,65 @@
 #'
 #' # Look at the finished product
 #' birds$show()
+#'
+#' # You can use the tag to populate a thread automatically from a chunk.
+#' # The first figure produced by the chunk will be attached as media.
+#' ```{r, setup}
+#' this_thread <- spindler::thread$new(tag = "tw_status", publish = TRUE)
+#' ```
+#'
+#' ```{r, tw_status = "The relationship between pressure and temperature is cool!"}
+#' plot(pressure)
+#' ```
+#'
+#' ```{r}
+#' this_thread$add_post("This post is a free agent, not tied to any chunk.")
+#' ```
 #' }
 #'
-#' @usage NULL
-#' @format NULL
-#'
-#'
+#' @aliases new add_post show get_url thread $
+#' @name thread
+NULL
+
+
 #' @export
-thread <- R6::R6Class("tweet_thread", list(
-  add_post = function(status, media, order) {
+thread <- R6::R6Class("tweeter_thread", list(
+  initialize = function(tag = NULL, publish = FALSE) {
+
+    if (!is.null(tag)) {
+      if (!requireNamespace("knitr", quietly = TRUE)) {
+        stop("Need to install knitr.")
+      }
+
+      knitr::knit_hooks$set(tw_status = function(before, options, envir) {
+        if (isTRUE(before)) {
+          options$dev <- c(options$dev, "png")
+        }
+
+        if (isFALSE(before)) {
+          figure <- paste(options$fig.path, options$label, "-1.png", sep = '')
+          if (!file.exists(figure)) {
+            figure <- NULL
+          }
+
+          self$add_post(status = options$tw_status,
+                        media = figure)
+        }
+      })
+
+      if (isTRUE(publish)) {
+        knitr::knit_hooks$set(document = function(x) {
+          self$publish()$show()
+          x
+        })
+      }
+    }
+    invisible(self)
+  },
+
+  add_post = function(status, media = NULL) {
     last <- length(self$post_list)
-    if (missing(status)) status <- NULL
-    if (missing(media)) media <- NULL
+    # if (missing(status)) status <- NULL
 
     if (!rtweet:::is_tweet_length(status)) {
       stop("Status longer than 280 characters:\n  * ", substr(status, 1, 140), "...")
@@ -102,6 +156,10 @@ thread <- R6::R6Class("tweet_thread", list(
     }
   },
 
+  get_posts = function() {
+    self$post_list
+  },
+
   show = function(n = 1) {
     url <- self$get_url(n)
     if (is.na(url)) {
@@ -127,6 +185,5 @@ thread <- R6::R6Class("tweet_thread", list(
 
   post_list = NULL
 ))
-
 
 

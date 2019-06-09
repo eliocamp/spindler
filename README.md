@@ -66,8 +66,7 @@ Create a new thread object and use `knitr_thread()`
 
 ````
 ```{r, setup}
-this_thread <- spindler::thread$new()
-spindler::knitr_thread(this_thread, publish = TRUE)
+this_thread <- spindler::thread$new(tag = "tw_status", publish = TRUE)
 ```
 ````
 
@@ -89,4 +88,5 @@ browser window.
 
 **Be careful**! Since the rendering process runs on an independent session, you won't
 get the thread object. This means that you cannot use `this_thread$destroy()` to 
-remove all the new posts, you'll need to do it manually.
+remove all the new posts, you'll need to do it manually. That's why `thread$new()`
+has the safety argument `publish`.
