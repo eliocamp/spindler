@@ -64,7 +64,7 @@ birds$show()
 
 Create a new thread object and use `knitr_thread()` 
 
-````
+````r
 ```{r, setup}
 this_thread <- spindler::thread$new(tag = "tw_status", publish = TRUE)
 ```
@@ -74,7 +74,7 @@ Now if you add the `tw_status` option to a chunk with the text you want to tweet
 it will be added to the thread along with its first figure (if there is one) during
 the rendering process.
 
-````
+````r
 ```{r, tw_status = "The relationship between pressure and temperature is cool!"}
 plot(pressure)
 ```
