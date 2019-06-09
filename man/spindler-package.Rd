@@ -17,14 +17,9 @@ Twitter App and authenticate it with rtweet. Check https://rtweet.info/articles/
 for instructions.
 }
 
-\section{Functions}{
+\section{Usage}{
 
-There's only two functions.
-\itemize{
-\item \link{thread}
-\item \code{\link[=knitr_thread]{knitr_thread()}} sets up a rmarkdown document so you can publish chunks as
-posts in a thread.
-}
+All you need to know is on the \link{thread} object.
 }
 
 \author{

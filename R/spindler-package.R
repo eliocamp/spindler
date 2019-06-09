@@ -3,13 +3,8 @@
 #' Twitter App and authenticate it with rtweet. Check https://rtweet.info/articles/auth.html
 #' for instructions.
 #'
-#' @section Functions:
-#' There's only two functions.
-#'
-#' * [thread]
-#' * [knitr_thread()] sets up a rmarkdown document so you can publish chunks as
-#' posts in a thread.
-#'
+#' @section Usage:
+#' All you need to know is on the [thread] object.
 #'
 #' @keywords internal
 "_PACKAGE"
