@@ -28,6 +28,9 @@ devtools::install_github("eliocamp/spindler")
 Spinder uses [rtweet](https://rtweet.info) to publish your tweets, so you'll need to 
 go over its basic configuration of [obtaining and using access tokens](https://rtweet.info/articles/auth.html).
 
+
+**NOTICE:** There's currently [a bug](https://github.com/mkearney/rtweet/issues/329) in rtweet that prevents it from posting tweets. Until it is fixed this package will not work properly. 
+
 ## Example
 
 ### Manually crafted:
