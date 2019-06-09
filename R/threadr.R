@@ -21,15 +21,15 @@
 #' @param n Number of post in thread to show in browser or get url from.
 #'
 #' @details
-#' The basic workflow is to create a new thread object with \code{thread$new()} and
-#' then populate it with \code{thread$add_post()}. Once you are happy with it, publish
-#' it to Tweeter with \code{thread$publish()}. If you want to "unpublish" it, use
-#' \code{thread$destroy()}. This will delete each post on Twitter, but they will
-#' still be saved on your thread object. Use \code{thread$clear()} to delete them.
+#' The basic workflow is to create a new thread object with `thread$new()` and
+#' then populate it with `thread$add_post()`. Once you are happy with it, publish
+#' it to Tweeter with `thread$publish()`. If you want to "unpublish" it, use
+#' `thread$destroy()`. This will delete each post on Twitter, but they will
+#' still be saved on your thread object. Use `thread$clear()` to delete them.
 #'
-#' To view the list of posts currently on your thread, use \code{thread$get_posts()}.
-#' Once published, you can get the url of each post with \code{thread$get_url()} or
-#' open it up in a browser session with \code{thread$show()}.
+#' To view the list of posts currently on your thread, use `thread$get_posts()`.
+#' Once published, you can get the url of each post with `thread$get_url()` or
+#' open it up in a browser session with `thread$show()`.
 #'
 #' @examples
 #' \dontrun{
@@ -113,6 +113,10 @@ thread <- R6::R6Class("tweeter_thread", list(
 
     if (!rtweet:::is_tweet_length(status)) {
       stop("Status longer than 280 characters:\n  * ", substr(status, 1, 140), "...")
+    }
+
+    if (!is.null(media) && !file.exists(media)) {
+      stop("No media in ", media)
     }
 
     if (!all(is.null(media), is.null(status))){
