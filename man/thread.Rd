@@ -60,7 +60,7 @@ If you like the package, consider adding it so more people can enjoy it :).
 birds <- thread$new()
 birds$add_post("Hey, people, I want to tell you how awesome birds are!")$
   add_post("They have feathers, and (most of them) can fly!")$
-  add_post("And look how cute they ares", media = "pictures/birds/penguin1.png")
+  add_post("And look how cute they ares", media = "~/Pictures/penguin1.png")
 
 birds$publish()
 
