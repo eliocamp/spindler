@@ -4,7 +4,7 @@
 \alias{thread}
 \alias{new}
 \alias{add_post}
-\alias{show}
+\alias{browse}
 \alias{get_url}
 \alias{$}
 \title{Twitter thread}
@@ -48,7 +48,7 @@ open it up in a browser session with \code{thread$browse()}.
 
 The \code{thread$add_watermark()} method adds this post:
 
-This thread comes to you courtesy of the spindler \U1F4E6 \cr
+This thread comes to you courtesy of the spindler {package emoji} \cr
 Reproducible tweets with R and rmarkdown. \cr
 #rstats \cr
 https://git.io/fjzxN

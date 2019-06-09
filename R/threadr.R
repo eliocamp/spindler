@@ -34,7 +34,7 @@
 #'
 #' The `thread$add_watermark()` method adds this post:
 #'
-#' This thread comes to you courtesy of the spindler \U1F4E6 \cr
+#' This thread comes to you courtesy of the spindler {package emoji} \cr
 #' Reproducible tweets with R and rmarkdown. \cr
 #' \#rstats \cr
 #' https://git.io/fjzxN
@@ -77,7 +77,7 @@
 #' ```
 #' }
 #'
-#' @aliases new add_post show get_url thread $
+#' @aliases new add_post browse get_url thread $
 #' @name thread
 NULL
 
