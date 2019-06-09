@@ -13,10 +13,11 @@ thread$new(tag = NULL, publish = FALSE)
 thread$add_post(status, media = NULL)
 thread$clear()
 thread$publish()
-thread$show(n = 1)
+thread$browse(n = 1)
 thread$get_url(n = 1)
 thread$get_posts()
 thread$destroy()
+thread$add_whatermark()
 }
 \arguments{
 \item{tag}{String that can be used as a chunk option inside a rmarkdown document
@@ -43,7 +44,16 @@ still be saved on your thread object. Use \code{thread$clear()} to delete them.
 
 To view the list of posts currently on your thread, use \code{thread$get_posts()}.
 Once published, you can get the url of each post with \code{thread$get_url()} or
-open it up in a browser session with \code{thread$show()}.
+open it up in a browser session with \code{thread$browse()}.
+
+The \code{thread$add_watermark()} method adds this post:
+
+This thread comes to you courtesy of the spindler \U1F4E6 \cr
+Reproducible tweets with R and rmarkdown. \cr
+#rstats \cr
+https://git.io/fjzxN
+
+If you like the package, consider adding it so more people can enjoy it :).
 }
 \examples{
 \dontrun{
@@ -64,7 +74,7 @@ birds$clear()$
   publish
 
 # Look at the finished product
-birds$show()
+birds$browse()
 
 # You can use the tag to populate a thread automatically from a chunk.
 # The first figure produced by the chunk will be attached as media.

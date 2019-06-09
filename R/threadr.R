@@ -7,10 +7,11 @@
 #' thread$add_post(status, media = NULL)
 #' thread$clear()
 #' thread$publish()
-#' thread$show(n = 1)
+#' thread$browse(n = 1)
 #' thread$get_url(n = 1)
 #' thread$get_posts()
 #' thread$destroy()
+#' thread$add_whatermark()
 #'
 #' @param tag String that can be used as a chunk option inside a rmarkdown document
 #' to populate the thread (see Examples.)
@@ -29,14 +30,23 @@
 #'
 #' To view the list of posts currently on your thread, use `thread$get_posts()`.
 #' Once published, you can get the url of each post with `thread$get_url()` or
-#' open it up in a browser session with `thread$show()`.
+#' open it up in a browser session with `thread$browse()`.
+#'
+#' The `thread$add_watermark()` method adds this post:
+#'
+#' This thread comes to you courtesy of the spindler \U1F4E6 \cr
+#' Reproducible tweets with R and rmarkdown. \cr
+#' \#rstats \cr
+#' https://git.io/fjzxN
+#'
+#' If you like the package, consider adding it so more people can enjoy it :\).
 #'
 #' @examples
 #' \dontrun{
 #' birds <- thread$new()
 #' birds$add_post("Hey, people, I want to tell you how awesome birds are!")$
 #'   add_post("They have feathers, and (most of them) can fly!")$
-#'   add_post("And look how cute they ares", media = "pictures/birds/penguin1.png")
+#'   add_post("And look how cute they ares", media = "~/Pictures/penguin1.png")
 #'
 #' birds$publish()
 #'
@@ -50,7 +60,7 @@
 #'   publish
 #'
 #' # Look at the finished product
-#' birds$show()
+#' birds$browse()
 #'
 #' # You can use the tag to populate a thread automatically from a chunk.
 #' # The first figure produced by the chunk will be attached as media.
@@ -99,7 +109,7 @@ thread <- R6::R6Class("tweeter_thread", list(
 
       if (isTRUE(publish)) {
         knitr::knit_hooks$set(document = function(x) {
-          self$publish()$show()
+          self$publish()$browse()
           x
         })
       }
@@ -111,7 +121,7 @@ thread <- R6::R6Class("tweeter_thread", list(
     last <- length(self$post_list)
     # if (missing(status)) status <- NULL
 
-    if (!rtweet:::is_tweet_length(status)) {
+    if (!is_tweet_length(status)) {
       stop("Status longer than 280 characters:\n  * ", substr(status, 1, 140), "...")
     }
 
@@ -125,6 +135,10 @@ thread <- R6::R6Class("tweeter_thread", list(
                                          id = NA)
     }
     invisible(self)
+  },
+
+  add_watermark = function() {
+    self$add_post(status = self$watermark)
   },
 
   publish = function() {
@@ -152,7 +166,7 @@ thread <- R6::R6Class("tweeter_thread", list(
   },
 
   get_url = function(n = 1) {
-    id <- self$post_list$id[n]
+    id <- self$post_list[[n]]$id
     if (!is.na(id)) {
       paste0("https://twitter.com/", rtweet:::home_user(), "/status/", id)
     } else {
@@ -164,7 +178,7 @@ thread <- R6::R6Class("tweeter_thread", list(
     self$post_list
   },
 
-  show = function(n = 1) {
+  browse = function(n = 1) {
     url <- self$get_url(n)
     if (is.na(url)) {
       stop("Tweet not published yer.")
@@ -187,7 +201,42 @@ thread <- R6::R6Class("tweeter_thread", list(
     self$post_list <- NULL
   },
 
+  print = function() {
+    posts <- self$get_posts()
+    n <- length(posts)
+
+    max_width <- nchar(n)
+    margin <- strrep(" ", max_width + 2)
+
+    for (p in seq_along(posts)) {
+      cat(formatC(p, width = max_width), ": ", sep = "")
+
+      post <- strsplit(posts[[p]]$status, "\n")[[1]]
+      post <- strwrap(post, width = 60)
+
+      cat(paste0(post, collapse = paste0("\n", margin, collapse = ""), sep = ""))
+
+      if (!is.null(posts[[p]]$media)) {
+        cat("\n")
+        cat(margin, normalizePath(posts[[p]]$media), sep = "")
+      }
+      cat("\n")
+      cat(margin, "| \n", sep = "")
+    }
+  },
+
+  watermark = "This thread comes to you courtesy of the spindler \U1F4E6. \nReproducible tweets with R and rmarkdown. \n#rstats \nhttps://git.io/fjzxN",
+
   post_list = NULL
 ))
 
+
+# from rtweet.
+is_tweet_length <- function(.x, n = 280) {
+  .x <- gsub("https?://[[:graph:]]+\\s?", "", .x)
+  while (grepl("^@\\S+\\s+", .x)) {
+    .x <- sub("^@\\S+\\s+", "", .x)
+  }
+  nchar(.x) <= n
+}
 

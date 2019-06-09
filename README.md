@@ -4,7 +4,7 @@
 <!-- badges: start -->
 <!-- badges: end -->
 
-The goal of spindler is to publish Twitter threads based on an rmarkdown document. 
+The goal of spindler is to extend reproducible reporting to Twitter threads. Simply by adding a few lines into a rmarkdown document, you can publihs a Tweet thread with your selected results and short comments. 
 
 ## Installation
 
@@ -38,37 +38,51 @@ devtools::install_github("mkearney/rtweet", ref = "79fdf4aa7d219793bf2b201ce059f
 
 ### Manually crafted:
 
-```{r, eval=FALSE}
+```{r}
 birds <- spindler::thread$new()
 birds$add_post("Hey, people, I want to tell you how awesome birds are!")$
   add_post("They have feathers, and (most of them) can fly!")$
-  add_post("And look how cute they ares", media = "pictures/birds/penguin1.png")
+  add_post("And look how cute they ares", media = "~/Pictures/penguin1.png")
+```
 
+Take a look at it:
+
+```r
+birds
+#> 1: Hey, people, I want to tell you how awesome birds are!
+#>    | 
+#> 2: They have feathers, and (most of them) can fly!
+#>    | 
+#> 3: And look how cute they ares
+#>    /home/elio/Pictures/penguin1.png
+#>    |
+```
+
+All looks good, let's publish it and open it in a browser. 
+
+```r
 birds$publish()
+birds$browse()
 ```
 
 Oh, no I made a typo. Quick, delete the whole thing!
-```{r, eval=FALSE}
+```{r}
 birds$destroy()
 ```
 
 Let's start over
 
-```{r, eval=FALSE}
+```{r}
 birds$clear()$
   add_post("Nooo! I had an awesome thread about birds, but I messed up.")$
   add_post("So here's the jist of it: birds rock and they are better than monkeys!")$
   publish()
 ```
 
-Look at the finished product
-```{r, eval=FALSE}
-birds$show()
-```
 
 ### From knitr
 
-Create a new thread object and use `knitr_thread()` 
+Create a new thread object with a tag assigned. 
 
 ````r
 ```{r, setup}
@@ -87,7 +101,7 @@ plot(pressure)
 ````
 
 You can also use `this_thread$new_post()` inside your knitr document to add posts 
-manually. 
+manually.
 
 When the document is done rendering, your thread with be published and shown in a 
 browser window. 

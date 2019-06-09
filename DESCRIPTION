@@ -14,7 +14,8 @@ Encoding: UTF-8
 LazyData: true
 Imports: 
     rtweet,
-    R6
+    R6,
+    stringi
 Suggests: 
     knitr
 RoxygenNote: 6.1.1
