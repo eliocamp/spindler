@@ -29,9 +29,12 @@ Spinder uses [rtweet](https://rtweet.info) to publish your tweets, so you'll nee
 go over its basic configuration of [obtaining and using access tokens](https://rtweet.info/articles/auth.html).
 
 
-**NOTICE:** There's currently [a bug](https://github.com/mkearney/rtweet/issues/329) in rtweet that prevents it from posting tweets. Until it is fixed this package will not work properly. 
+**NOTICE:** 
+There's currently [a bug](https://github.com/mkearney/rtweet/issues/329) in the latest version of rtweet that prevents it from posting tweets. Until it is fixed this package will not work properly. You can workaround the issue by installing an older version with 
 
-## Example
+```r
+devtools::install_github("mkearney/rtweet", ref = "79fdf4aa7d219793bf2b201ce059f3bd6395bc7b")
+```
 
 ### Manually crafted:
 
