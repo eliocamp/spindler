@@ -91,7 +91,7 @@ thread <- R6::R6Class("tweeter_thread", list(
         stop("Need to install knitr.")
       }
 
-      knitr::knit_hooks$set(tw_status = function(before, options, envir) {
+      knitr_status <- function(before, options, envir) {
         if (isTRUE(before)) {
           options$dev <- c(options$dev, "png")
         }
@@ -102,10 +102,12 @@ thread <- R6::R6Class("tweeter_thread", list(
             figure <- NULL
           }
 
-          self$add_post(status = options$tw_status,
+          self$add_post(status = options[[tag]],
                         media = figure)
         }
-      })
+      }
+
+      do.call(knitr::knit_hooks$set, setNames(list(knitr_status), tag))
 
       if (isTRUE(publish)) {
         knitr::knit_hooks$set(document = function(x) {
