@@ -2,6 +2,7 @@
 # spindler <img src='man/figures/logo.png' align="right" height="276" />
 
 <!-- badges: start -->
+[![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
 <!-- badges: end -->
 
 The goal of spindler is to extend reproducible reporting to Twitter threads. Simply by adding a few lines into a rmarkdown document, you can publihs a Tweet thread with your selected results and short comments. 
