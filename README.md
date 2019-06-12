@@ -5,7 +5,7 @@
 [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
 <!-- badges: end -->
 
-The goal of spindler is to extend reproducible reporting to Twitter threads. Simply by adding a few lines into a rmarkdown document, you can publihs a Tweet thread with your selected results and short comments. 
+The goal of spindler is to extend reproducible reporting to Twitter threads. Simply by adding a few lines into a rmarkdown document, you can publish a thread with selected results and short comments. 
 
 ## Installation
 
