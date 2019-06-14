@@ -171,8 +171,7 @@ thread <- R6::R6Class("tweeter_thread", list(
   },
 
   publish = function() {
-    # on.exit(self$destroy())
-    if (length(self$post_list) == 0) {
+    if (nrow(self$posts) == 0) {
       message("Nothing to publish.")
       return(invisible(self))
     }
@@ -257,7 +256,7 @@ thread <- R6::R6Class("tweeter_thread", list(
 
       if (!is.na(posts$media[p])) {
         cat("\n")
-        cat(margin, posts[[p]]$media) #normalizePath(posts[[p]]$media), sep = "")
+        cat(margin, posts$media[p], sep = "")
       }
       cat("\n")
       cat(margin, "| \n", sep = "")
