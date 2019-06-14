@@ -15,7 +15,8 @@ LazyData: true
 Imports: 
     rtweet,
     R6,
-    stringi
+    stringi,
+    rappdirs
 Suggests: 
     knitr
 RoxygenNote: 6.1.1

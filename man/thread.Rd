@@ -6,10 +6,13 @@
 \alias{add_post}
 \alias{browse}
 \alias{get_url}
+\alias{save}
+\alias{load}
+\alias{show_media}
 \alias{$}
 \title{Twitter thread}
 \usage{
-thread$new(tag = NULL, publish = FALSE)
+thread$new(tag = NULL)
 thread$add_post(status, media = NULL)
 thread$clear()
 thread$publish()
@@ -18,19 +21,23 @@ thread$get_url(n = 1)
 thread$get_posts()
 thread$destroy()
 thread$add_whatermark()
+thread$show_media(n)
+
+thread$save()
+thread$load(which = -1)
 }
 \arguments{
 \item{tag}{String that can be used as a chunk option inside a rmarkdown document
 to populate the thread (see Examples.)}
 
-\item{publish}{Wheter to publish the thread when finishing rendering. Only used
-when rendering a rmarkdown document.}
-
 \item{status}{Text to be tweeted.}
 
 \item{media}{Path to an image or video that will be attached to the tweet.}
 
-\item{n}{Number of post in thread to show in browser or get url from.}
+\item{n}{Number of post in thread.}
+
+\item{which}{Numeric indicating which thread to load. Negative values mean reverse
+counting (i.e. n = -1 loads the latests thread, n = -2,the one before and so on.)}
 }
 \description{
 Creates a twitter thread object that can be populated with posts, published and destroyed.
@@ -54,6 +61,11 @@ Reproducible tweets with R and rmarkdown. \cr
 https://git.io/fjzxN
 
 If you like the package, consider adding it so more people can enjoy it :).
+
+You can save your threads for later use with \code{thread$save()}. It will write the
+thread object to disk so you can retrieve it later. Saved posts can be retrieved
+with the \code{thread$load()} function. A list of all saved threads can be retrieved
+with the \code{\link[=saved_threads]{saved_threads()}} function.
 }
 \examples{
 \dontrun{
@@ -71,7 +83,7 @@ birds$destroy()
 birds$clear()$
   add_post("Nooo! I had an awesome thread about birds, but I messed up.")$
   add_post("So here's the jist of it: birds rock and they are better than monkeys!")$
-  publish
+  publish()
 
 # Look at the finished product
 birds$browse()
@@ -79,7 +91,7 @@ birds$browse()
 # You can use the tag to populate a thread automatically from a chunk.
 # The first figure produced by the chunk will be attached as media.
 ```{r, setup}
-this_thread <- spindler::thread$new(tag = "tw_status", publish = TRUE)
+this_thread <- spindler::thread$new(tag = "tw_status")
 ```
 
 ```{r, tw_status = "The relationship between pressure and temperature is cool!"}
@@ -89,6 +101,14 @@ plot(pressure)
 ```{r}
 this_thread$add_post("This post is a free agent, not tied to any chunk.")
 ```
+
+# Publish the thread rom inside the rmarkdown document.
+# It's recomended to also save it so you can easily destroy it later
+# in case something went wrong.
+```{r}
+this_thread$publish()$save()$browse()
+```
+
 }
 
 }

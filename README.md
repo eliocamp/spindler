@@ -87,7 +87,7 @@ Create a new thread object with a tag assigned.
 
 ````r
 ```{r, setup}
-this_thread <- spindler::thread$new(tag = "tw_status", publish = TRUE)
+this_thread <- spindler::thread$new(tag = "tw_status")
 ```
 ````
 
@@ -99,8 +99,12 @@ plot(pressure)
 ```
 ````
 
-You can also use `this_thread$new_post()` inside your knitr document to add posts manually.
+You can also use `this_thread$new_post()` inside your knitr document to add posts manually. At the point where you want to publish your post, do it from inside a new chunk. It's recomended that you also save your thread. 
 
-When the document is done rendering, your thread with be published and shown in a browser window. 
+````r
+```{r}
+this_thread$publish()$save()$browse()
+```
+````
 
-**Be careful**! Since the rendering process runs on an independent session, you won't get the thread object back after rendering. This means that you cannot use `this_thread$destroy()` to remove all the new posts, you'll need to do it manually. That's why `thread$new()` has the safety argument `publish`.
+Afterwards you can load the latests saved thread with `thread$new()$load()`.
