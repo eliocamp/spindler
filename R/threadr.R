@@ -128,12 +128,13 @@ thread <- R6::R6Class("tweeter_thread", list(
 
       do.call(knitr::knit_hooks$set, setNames(list(knitr_status), tag))
 
-      if (isTRUE(publish)) {
-        knitr::knit_hooks$set(document = function(x) {
-          self$publish()$browse()
-          x
-        })
-      }
+      # if (isTRUE(publish)) {
+      #   knitr::knit_hooks$set(document = function(x) {
+      #     self$publish()$browse()
+      #     self$save()
+      #     x
+      #   })
+      # }
     }
     invisible(self)
   },
