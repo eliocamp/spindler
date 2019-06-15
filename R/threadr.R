@@ -347,8 +347,10 @@ saved_threads <- function() {
 
      thread$new()$load(f, dir = dir)
   })
-
-  # names(thread_list) <- files
   thread_list
 }
+
+# new_thread <- function(tag = NULL) {
+#   thread$new(tag = tag)
+# }
 
