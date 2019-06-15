@@ -108,7 +108,7 @@ plot(pressure)
 ```
 ````
 
-You can also use `this_thread$new_post()` inside your knitr document to add posts manually. At the point where you want to publish your post, do it from inside a new chunk. It's recomended that you also save your thread. 
+You can also use `this_thread$add_post()` inside your knitr document to add posts manually. At the point where you want to publish your post, do it from inside a new chunk. It's recomended that you also save your thread. 
 
 ````r
 ```{r}
