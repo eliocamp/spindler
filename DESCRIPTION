@@ -18,6 +18,8 @@ Imports:
     stringi,
     rappdirs
 Suggests: 
-    knitr
+    knitr,
+    shiny,
+    miniUI
 RoxygenNote: 6.1.1
 Roxygen: list(markdown = TRUE)

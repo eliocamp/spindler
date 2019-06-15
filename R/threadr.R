@@ -12,6 +12,7 @@
 #' thread$get_posts()
 #' thread$destroy()
 #' thread$add_whatermark()
+#' thread$preview()
 #' thread$show_media(n)
 #'
 #' thread$save()
@@ -28,10 +29,12 @@
 #'
 #' @details
 #' The basic workflow is to create a new thread object with `thread$new()` and
-#' then populate it with `thread$add_post()`. Once you are happy with it, publish
-#' it to Tweeter with `thread$publish()`. If you want to "unpublish" it, use
-#' `thread$destroy()`. This will delete each post on Twitter, but they will
-#' still be saved on your thread object. Use `thread$clear()` to delete them.
+#' then populate it with `thread$add_post()`. After that, you can preview it with
+#' `thread$preview()` (opens a shiny interface) or just printing it on the console.
+#' Once you are happy with it, publish it to Tweeter with `thread$publish()`.
+#' If you want to "unpublish" it, use `thread$destroy()`. This will delete each post
+#' on Twitter, but they will still be saved on your thread object.
+#' Use `thread$clear()` to delete them.
 #'
 #' To view the list of posts currently on your thread, use `thread$get_posts()`.
 #' Once published, you can get the url of each post with `thread$get_url()` or
@@ -96,7 +99,7 @@
 #'
 #' }
 #'
-#' @aliases new add_post browse get_url thread save load show_media $
+#' @aliases new add_post browse get_url thread save load show_media preview $
 #' @name thread
 NULL
 
@@ -209,6 +212,10 @@ thread <- R6::R6Class("tweeter_thread", list(
 
   get_posts = function() {
     return(self$posts)
+  },
+
+  preview = function() {
+    thread_show(self)
   },
 
   browse = function(n = 1) {

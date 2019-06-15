@@ -39,14 +39,14 @@ devtools::install_github("mkearney/rtweet", ref = "79fdf4aa7d219793bf2b201ce059f
 
 ### Manually crafted:
 
-```{r}
+```r
 birds <- spindler::thread$new()
 birds$add_post("Hey, people, I want to tell you how awesome birds are!")$
   add_post("They have feathers, and (most of them) can fly!")$
   add_post("And look how cute they ares", media = "~/Pictures/penguin1.png")
 ```
 
-Take a look at it:
+Take a look at it either in plain text format by printing it:
 
 ```r
 birds
@@ -58,6 +58,14 @@ birds
 #>    /home/elio/Pictures/penguin1.png
 #>    |
 ```
+
+Or with a hiny app i
+
+```r
+birds$preview()
+```
+
+![](man/figures/preview-screenshot.png)
 
 All looks good, let's publish it and open it in a browser. 
 

@@ -9,6 +9,7 @@
 \alias{save}
 \alias{load}
 \alias{show_media}
+\alias{preview}
 \alias{$}
 \title{Twitter thread}
 \usage{
@@ -21,6 +22,7 @@ thread$get_url(n = 1)
 thread$get_posts()
 thread$destroy()
 thread$add_whatermark()
+thread$preview()
 thread$show_media(n)
 
 thread$save()
@@ -44,10 +46,12 @@ Creates a twitter thread object that can be populated with posts, published and 
 }
 \details{
 The basic workflow is to create a new thread object with \code{thread$new()} and
-then populate it with \code{thread$add_post()}. Once you are happy with it, publish
-it to Tweeter with \code{thread$publish()}. If you want to "unpublish" it, use
-\code{thread$destroy()}. This will delete each post on Twitter, but they will
-still be saved on your thread object. Use \code{thread$clear()} to delete them.
+then populate it with \code{thread$add_post()}. After that, you can preview it with
+\code{thread$preview()} (opens a shiny interface) or just printing it on the console.
+Once you are happy with it, publish it to Tweeter with \code{thread$publish()}.
+If you want to "unpublish" it, use \code{thread$destroy()}. This will delete each post
+on Twitter, but they will still be saved on your thread object.
+Use \code{thread$clear()} to delete them.
 
 To view the list of posts currently on your thread, use \code{thread$get_posts()}.
 Once published, you can get the url of each post with \code{thread$get_url()} or
