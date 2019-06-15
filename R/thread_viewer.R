@@ -5,11 +5,9 @@ get_user_avatar <- function()  {
 }
 
 status_card <- function(post, avatar, p) {
-  # browser()
   style_card <- "display:flex;background-color:#fafafa;padding:5px;margin-bottom: 10px;border:1px solid gray;box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);border-radius: 3px;color:#d4d4d4"
   style_p <- "color:Black;"
   if (!is.na(post$media)) {
-    # browser()
     resource <- paste0("images", p)
     shiny::addResourcePath(resource, dirname(post$media))
     media_div <- shiny::div(class = "image-container",
@@ -19,7 +17,6 @@ status_card <- function(post, avatar, p) {
     media_div <- NULL
   }
 
-  # media_div <- NULL
   avatar_div <-  shiny::div(class = "avatar-container", style = "padding:4px;flex:10%",
                             shiny::img(src = avatar, style="border-radius:50%"))
 
@@ -40,7 +37,6 @@ thread_show <- function(thread) {
   posts <- thread$get_posts()
   avatar <- get_user_avatar()
   posts_divs <- lapply(seq_len(nrow(posts)), function(p) status_card(posts[p, ], avatar, p))
-  # browser()
   ui <- miniUI::miniPage(
     miniUI::gadgetTitleBar("Thread", right = miniUI::miniTitleBarButton("publish", "Publish Thread", primary = TRUE)),
     miniUI::miniContentPanel( padding = 50,
