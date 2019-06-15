@@ -1,26 +1,41 @@
 library(shiny)
 library(miniUI)
 
-myGadgetFunc <- function(inputValue1, inputValue2) {
+get_user_avatar <- function()  {
+  user <- rtweet:::home_user()
+  rtweet::lookup_users(user)$profile_image_url
+}
 
-  text1 <- "logo"
-  text2 <- "logo2"
-  image1 <- "logo/logo.png"
+myGadgetFunc <- function(thread) {
+  style_card <- "background-color:#fafafa;padding:5px;margin-bottom: 10px;border:1px solid gray;box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);border-radius: 3px;color:#d4d4d4"
+  style_p <- "color:Black;"
+  posts <- thread$get_posts()
+  avatar <- get_user_avatar()
+  posts_divs <- lapply(seq_len(nrow(posts)), function(p) {
 
-  style_card <- "border:1px solid gray;box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);border-radius: 3px;color:#d4d4d4"
+    if (is.na(posts$media[p])) {
+      div(class = "tweet", style = style_card,
+          img(src = avatar),
+          div(class = "status-container",
+              p(class = "status", style = style_p, posts$status[p]))
+      )
+
+    } else {
+      div(class = "tweet", style = style_card,
+          img(src = avatar),
+          div(class = "status-container",
+              p(class = "status", style = style_p, posts$status[p])),
+          div(class = "image-container",
+              img(class = "image", src = posts$media[p])
+          )
+      )
+    }
+  })
+
   ui <- miniPage(
     gadgetTitleBar("Thread"),
-    miniContentPanel(
-
-      div(class = "tweet", style = style_card,
-          p(class = "status", text1),
-          img(class = "image", src = paste0(getwd(), "logo/logo.png"))
-      ),
-      div(class = "tweet", style = style_card,
-          p(class = "status", text2))
-
-
-      # Define layout, inputs, outputs
+    miniContentPanel( padding = 50,
+                      posts_divs
     )
   )
 
