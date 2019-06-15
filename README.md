@@ -59,13 +59,14 @@ birds
 #>    |
 ```
 
-Or with a hiny app i
+Or with a shiny app: 
 
 ```r
 birds$preview()
 ```
 
 ![](man/figures/preview-screenshot.png)
+
 
 All looks good, let's publish it and open it in a browser. 
 
