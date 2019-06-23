@@ -158,9 +158,10 @@ thread <- R6::R6Class("tweeter_thread", list(
           stop('ggplot2 package required to render ggplot2 objects. Install it with `install.packages("ggplot2")`')
         }
         filename <- tempfile(pattern = "twitter_plot_", fileext = ".png")
+        dpi <- 150
         ggplot2::ggsave(plot = media, filename = filename,
-                        width = 506/72,
-                        height = 253/72, dpi = 72)
+                        width = 1024/dpi,
+                        height = 512/dpi, dpi = dpi)
         media <- filename
       }
       media <- normalizePath(media)
