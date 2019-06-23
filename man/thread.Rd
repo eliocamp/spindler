@@ -34,7 +34,7 @@ to populate the thread (see Examples.)}
 
 \item{status}{Text to be tweeted.}
 
-\item{media}{Path to an image or video that will be attached to the tweet.}
+\item{media}{Path to an image, video, or a ggplot2 object that will be attached to the tweet.}
 
 \item{n}{Number of post in thread.}
 

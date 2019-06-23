@@ -22,7 +22,7 @@
 #' @param tag String that can be used as a chunk option inside a rmarkdown document
 #' to populate the thread (see Examples.)
 #' @param status Text to be tweeted.
-#' @param media Path to an image or video that will be attached to the tweet.
+#' @param media Path to an image, video, or a ggplot2 object that will be attached to the tweet.
 #' @param n Number of post in thread.
 #' @param which Numeric indicating which thread to load. Negative values mean reverse
 #' counting (i.e. n = -1 loads the latests thread, n = -2,the one before and so on.)
@@ -152,7 +152,17 @@ thread <- R6::R6Class("tweeter_thread", list(
       stop("Status longer than 280 characters:\n  * ", substr(status, 1, 140), "...")
     }
 
-    if (!is.na(media)) {
+    if (!is.na(media)[1]) {
+      if (inherits(media, "ggplot")) {
+        if (!requireNamespace("ggplot2", quietly = TRUE)) {
+          stop('ggplot2 package required to render ggplot2 objects. Install it with `install.packages("ggplot2")`')
+        }
+        filename <- tempfile(pattern = "twitter_plot_", fileext = ".png")
+        ggplot2::ggsave(plot = media, filename = filename,
+                        width = 506/72,
+                        height = 253/72, dpi = 72)
+        media <- filename
+      }
       media <- normalizePath(media)
 
       if (!file.exists(media)) {
@@ -187,7 +197,6 @@ thread <- R6::R6Class("tweeter_thread", list(
         prev_status <- self$posts$id[p - 1]
       }
       media <- self$posts$media[p]
-
       if (is.na(media)) media <- NULL
 
       rtweet::post_tweet(status = self$posts$status[p],
