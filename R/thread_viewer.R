@@ -8,11 +8,18 @@ status_card <- function(post, avatar, p) {
   style_card <- "display:flex;background-color:#fafafa;padding:5px;margin-bottom: 10px;border:1px solid gray;box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);border-radius: 3px;color:#d4d4d4"
   style_p <- "color:Black;"
   if (!is.na(post$media)) {
-    resource <- paste0("images", p)
-    shiny::addResourcePath(resource, dirname(post$media))
+    media <- unlist(post$media)
+
+    width_media <- paste0(80/length(media), "%")
+
+    imgs <- lapply(seq_along(media), function(m) {
+      resource <- paste0("images", p, m)
+      shiny::addResourcePath(resource, dirname(media[m]))
+      shiny::img(width = width_media, src = file.path(resource, basename(media[m])))
+    })
+
     media_div <- shiny::div(class = "image-container",
-                            shiny::img(width = "80%", src = file.path(resource, basename(post$media)))
-    )
+                            imgs)
   } else {
     media_div <- NULL
   }
@@ -50,7 +57,6 @@ thread_show <- function(thread) {
     # When the Done button is clicked, return a value
     shiny::observeEvent(input$publish, {
       thread$publish()
-      # returnValue <- invisible(thread)
       shiny::stopApp(invisible(thread))
     })
   }
