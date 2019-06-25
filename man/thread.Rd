@@ -46,9 +46,15 @@ Creates a twitter thread object that can be populated with posts, published and 
 }
 \details{
 The basic workflow is to create a new thread object with \code{thread$new()} and
-then populate it with \code{thread$add_post()}. After that, you can preview it with
-\code{thread$preview()} (opens a shiny interface) or just printing it on the console.
-Once you are happy with it, publish it to Tweeter with \code{thread$publish()}.
+then populate it with \code{thread$add_post()}. \code{status} can be a character vector to
+specify two posts that have different text but the same media. To add multiple pictures,
+pass a character vector or list to \code{media} (the former case when combining paths and ggplot
+objects). Keep in mind the limitations set by twitter. Each status update can have up to 4
+static images, or 1 gif or 1 video. \code{spindler} will check if there's more than 4 items, but
+not if it's an animated gif!
+
+You can preview it with \code{thread$preview()} (opens a shiny interface) or just printing it on the console.
+Once you are happy with it, publish it to Twiter with \code{thread$publish()}.
 If you want to "unpublish" it, use \code{thread$destroy()}. This will delete each post
 on Twitter, but they will still be saved on your thread object.
 Use \code{thread$clear()} to delete them.

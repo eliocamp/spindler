@@ -29,9 +29,15 @@
 #'
 #' @details
 #' The basic workflow is to create a new thread object with `thread$new()` and
-#' then populate it with `thread$add_post()`. After that, you can preview it with
-#' `thread$preview()` (opens a shiny interface) or just printing it on the console.
-#' Once you are happy with it, publish it to Tweeter with `thread$publish()`.
+#' then populate it with `thread$add_post()`. `status` can be a character vector to
+#' specify two posts that have different text but the same media. To add multiple pictures,
+#' pass a character vector or list to `media` (the former case when combining paths and ggplot
+#' objects). Keep in mind the limitations set by twitter. Each status update can have up to 4
+#' static images, or 1 gif or 1 video. `spindler` will check if there's more than 4 items, but
+#' not if it's an animated gif!
+#'
+#' You can preview it with `thread$preview()` (opens a shiny interface) or just printing it on the console.
+#' Once you are happy with it, publish it to Twiter with `thread$publish()`.
 #' If you want to "unpublish" it, use `thread$destroy()`. This will delete each post
 #' on Twitter, but they will still be saved on your thread object.
 #' Use `thread$clear()` to delete them.
@@ -142,42 +148,59 @@ thread <- R6::R6Class("tweeter_thread", list(
     invisible(self)
   },
 
+
   add_post = function(status, media = NULL) {
-    if (is.null(media)) media <- NA
 
-    last <- nrow(self$posts)
-    # if (missing(status)) status <- NULL
-
-    if (!is_tweet_length(status)) {
-      stop("Status longer than 280 characters:\n  * ", substr(status, 1, 140), "...")
-    }
-
-    if (!is.na(media)[1]) {
+    # render all media
+    if (is.null(media)) {
+      media <- NA  # NAs work better for storage
+    } else {
       if (inherits(media, "ggplot")) {
-        if (!requireNamespace("ggplot2", quietly = TRUE)) {
-          stop('ggplot2 package required to render ggplot2 objects. Install it with `install.packages("ggplot2")`')
+        media <- list(media)
+      }
+      media <- vapply(media, function(m) {
+        # Render plot if needed
+        if (inherits(m, "ggplot")) {
+          if (!requireNamespace("ggplot2", quietly = TRUE)) {
+            stop('ggplot2 package required to render ggplot2 objects. Install it with `install.packages("ggplot2")`')
+          }
+          filename <- tempfile(pattern = "twitter_plot_", fileext = ".png")
+          dpi <- 150
+          ggplot2::ggsave(plot = m, filename = filename,
+                          width = 1024/dpi,
+                          height = 512/dpi, dpi = dpi)
+          m <- filename
+        } else {
+          m <- normalizePath(m)
         }
-        filename <- tempfile(pattern = "twitter_plot_", fileext = ".png")
-        dpi <- 150
-        ggplot2::ggsave(plot = media, filename = filename,
-                        width = 1024/dpi,
-                        height = 512/dpi, dpi = dpi)
-        media <- filename
-      }
-      media <- normalizePath(media)
+        if (!file.exists(m)) {
+          stop("No media in ", m)
+        }
+        m
+      }, "char")
 
-      if (!file.exists(media)) {
-        stop("No media in ", media)
+      if (length(media) > 4) {
+        stop("Each tweet can have at most 4 pictures.")
       }
     }
 
-    if (!all(is.na(media), is.null(status))){
+    # Each status is one post and contains all media
+    for (s in seq_along(status)) {
 
-      self$posts <-  rbind(self$posts, data.frame(status = status,
-                                                  media = media,
-                                                  id = NA,
-                                                  stringsAsFactors = FALSE))
+      if (!is_tweet_length(status[s])) {
+        stop("Status longer than 280 characters:\n  * ", substr(status, 1, 140), "...")
+      }
+
+
+      new_post <- data.frame(id = NA,
+                             status = status[s],
+                             stringsAsFactors = FALSE)
+      new_post[["media"]] <- list(media)
+
+      self$posts <-  rbind(self$posts, new_post)
+
     }
+
     invisible(self)
   },
 
@@ -197,8 +220,8 @@ thread <- R6::R6Class("tweeter_thread", list(
       } else {
         prev_status <- self$posts$id[p - 1]
       }
-      media <- self$posts$media[p]
-      if (is.na(media)) media <- NULL
+      media <- unlist(self$posts$media[p])
+      if (is.na(media)[1]) media <- NULL
 
       rtweet::post_tweet(status = self$posts$status[p],
                          media = media,
@@ -249,7 +272,7 @@ thread <- R6::R6Class("tweeter_thread", list(
   },
 
   clear = function() {
-    self$posts <- data.frame(status = NULL, media = NULL, id = NULL, stringsAsFactors = FALSE)
+    self$posts <- data.frame(id = NULL, status = NULL, media = NULL, stringsAsFactors = FALSE)
     invisible(self)
   },
 
@@ -273,8 +296,12 @@ thread <- R6::R6Class("tweeter_thread", list(
       cat(paste0(post, collapse = paste0("\n", margin, collapse = ""), sep = ""))
 
       if (!is.na(posts$media[p])) {
-        cat("\n")
-        cat(margin, posts$media[p], sep = "")
+        for (m in unlist(posts$media[p])) {
+          cat("\n")
+          cat(margin, m, sep = "")
+        }
+
+
       }
       cat("\n")
       cat(margin, "| \n", sep = "")
@@ -282,13 +309,14 @@ thread <- R6::R6Class("tweeter_thread", list(
   },
 
   show_media = function(n) {
-    media <- self$get_posts()$media[n]
+    media <- unlist(self$get_posts()$media[n])
 
-    if (is.na(media)){
+    if (is.na(media[1])) {
       return(NA)
     }
 
     file.show(media)
+
     invisible(media)
   },
 
@@ -317,7 +345,7 @@ thread <- R6::R6Class("tweeter_thread", list(
 
   watermark = "This thread comes to you courtesy of the spindler \U1F4E6. \nReproducible tweets with R and rmarkdown. \n#rstats \nhttps://git.io/fjzxN",
 
-  posts = data.frame(status = NULL, media = NULL, id = NULL, stringsAsFactors = FALSE)
+  posts = data.frame(id = NULL, status = NULL, media = NULL, stringsAsFactors = FALSE)
 ))
 
 
@@ -362,7 +390,7 @@ saved_threads <- function() {
 
   thread_list <- lapply(seq_along(files), function(f) {
 
-     thread$new()$load(f, dir = dir)
+    thread$new()$load(f, dir = dir)
   })
   thread_list
 }
