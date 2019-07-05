@@ -11,6 +11,7 @@
 \alias{show_media}
 \alias{preview}
 \alias{$}
+\alias{add_whatermark}
 \title{Twitter thread}
 \usage{
 thread$new(tag = NULL)

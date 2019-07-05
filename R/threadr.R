@@ -106,7 +106,7 @@
 #'
 #' }
 #'
-#' @aliases new add_post browse get_url thread save load show_media preview $
+#' @aliases new add_post browse get_url thread save load show_media preview $ add_whatermark
 #' @name thread
 NULL
 
@@ -358,7 +358,7 @@ thread <- R6::R6Class("tweeter_thread", list(
 
   watermark = list(
     en = "This thread comes to you courtesy of the spindler \U1F4E6. \nReproducible tweets with R and rmarkdown. \n#rstats \nhttps://git.io/fjzxN",
-    es = "Este hilo es cortesía del \U1F4E6 spindler.\n Twits reproducibles con R y rmarkdown.. \n#rstats #rstatsES \nhttps://git.io/fjzxN"),
+    es = "Este hilo es cortes\u00eda del \U1F4E6 spindler.\n Twits reproducibles con R y rmarkdown. \n#rstats #rstatsES \nhttps://git.io/fjzxN"),
 
   posts = data.frame(id = NULL, status = NULL, media = NULL, stringsAsFactors = FALSE)
 ))
