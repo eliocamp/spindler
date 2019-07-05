@@ -155,11 +155,23 @@ thread <- R6::R6Class("tweeter_thread", list(
     if (is.null(media)) {
       media <- NA  # NAs work better for storage
     } else {
-      if (inherits(media, "ggplot")) {
+      if (inherits(media, c("ggplot", "gganim"))) {
         media <- list(media)
       }
       media <- vapply(media, function(m) {
         # Render plot if needed
+        #
+        if (inherits(m, "gganim"))  {
+          if (!requireNamespace("gganimate", quietly = TRUE)) {
+            stop('gganimate package required to render ggplot 2 animations. Install it with `install.packages("gganimate")`')
+          }
+          filename <- tempfile(pattern = "twitter_plot_", fileext = ".gif")
+          dpi <- 150
+          gganimate::anim_save(filename = filename, animation = m,
+                               width = 800,
+                               height = 400)
+          m <- filename
+        }
         if (inherits(m, "ggplot")) {
           if (!requireNamespace("ggplot2", quietly = TRUE)) {
             stop('ggplot2 package required to render ggplot2 objects. Install it with `install.packages("ggplot2")`')
