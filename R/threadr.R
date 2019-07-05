@@ -11,7 +11,7 @@
 #' thread$get_url(n = 1)
 #' thread$get_posts()
 #' thread$destroy()
-#' thread$add_whatermark()
+#' thread$add_whatermark(lang = "en")
 #' thread$preview()
 #' thread$show_media(n)
 #'
@@ -26,6 +26,7 @@
 #' @param n Number of post in thread.
 #' @param which Numeric indicating which thread to load. Negative values mean reverse
 #' counting (i.e. n = -1 loads the latests thread, n = -2,the one before and so on.)
+#' @param lang Language of the watermark. Currently "en" (English) or "es" (Spanish).
 #'
 #' @details
 #' The basic workflow is to create a new thread object with `thread$new()` and
@@ -216,8 +217,8 @@ thread <- R6::R6Class("tweeter_thread", list(
     invisible(self)
   },
 
-  add_watermark = function() {
-    self$add_post(status = self$watermark)
+  add_watermark = function(lang = "en") {
+    self$add_post(status = self$watermark[[lang]])
   },
 
   publish = function() {
@@ -355,7 +356,9 @@ thread <- R6::R6Class("tweeter_thread", list(
     readRDS(files[which])
   },
 
-  watermark = "This thread comes to you courtesy of the spindler \U1F4E6. \nReproducible tweets with R and rmarkdown. \n#rstats \nhttps://git.io/fjzxN",
+  watermark = list(
+    en = "This thread comes to you courtesy of the spindler \U1F4E6. \nReproducible tweets with R and rmarkdown. \n#rstats \nhttps://git.io/fjzxN",
+    es = "Este hilo es cortesía del \U1F4E6 spindler.\n Twits reproducibles con R y rmarkdown.. \n#rstats #rstatsES \nhttps://git.io/fjzxN"),
 
   posts = data.frame(id = NULL, status = NULL, media = NULL, stringsAsFactors = FALSE)
 ))

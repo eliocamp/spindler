@@ -21,7 +21,7 @@ thread$browse(n = 1)
 thread$get_url(n = 1)
 thread$get_posts()
 thread$destroy()
-thread$add_whatermark()
+thread$add_whatermark(lang = "en")
 thread$preview()
 thread$show_media(n)
 
@@ -40,6 +40,8 @@ to populate the thread (see Examples.)}
 
 \item{which}{Numeric indicating which thread to load. Negative values mean reverse
 counting (i.e. n = -1 loads the latests thread, n = -2,the one before and so on.)}
+
+\item{lang}{Language of the watermark. Currently "en" (English) or "es" (Spanish).}
 }
 \description{
 Creates a twitter thread object that can be populated with posts, published and destroyed.
