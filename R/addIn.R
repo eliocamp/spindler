@@ -5,14 +5,17 @@ png_from_clipboard <- function() {
 
   if (sys == "Windows") {
     #Windows
-
+    png::writePNG(png::readPNG("clipboard"), target = img)
   } else if (sys == "Darwin") {
     # OSX
+    result <- try(system(paste0("pngpaste ", img)), silent = TRUE)
+    if (inherits(result, "try-error")) {
+      stop("Needs pngpaste")
+    }
+
   } else {
     # Linux
     targets <- try(system("xclip -selection clipboard -t TARGETS -o", intern = TRUE), silent = TRUE)
-
-
     if (inherits(target, "try-error")) {
       warning("Clipboard on X11 requires 'xclip'.")
     }
