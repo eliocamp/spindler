@@ -227,7 +227,8 @@ thread <- R6::R6Class("tweeter_thread", list(
       return(invisible(self))
     }
 
-    for (p in seq_along(self$posts)) {
+    for (p in seq_len(nrow(self$posts))) {
+      # browser()
       if (p == 1) {
         prev_status <- NULL
       } else {
