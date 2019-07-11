@@ -1,0 +1,4 @@
+Name: Insert image from clipboard
+Description: Saves image from clipboard and inserts its path
+Binding: imgFromClipboard
+Interactive: false
