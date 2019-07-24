@@ -167,7 +167,7 @@ thread <- R6::R6Class("tweeter_thread", list(
             stop('gganimate package required to render ggplot 2 animations. Install it with `install.packages("gganimate")`')
           }
           filename <- tempfile(pattern = "twitter_plot_", fileext = ".gif")
-          dpi <- 150
+          dpi <- 72
           gganimate::anim_save(filename = filename, animation = m,
                                width = 800,
                                height = 400)
@@ -178,7 +178,7 @@ thread <- R6::R6Class("tweeter_thread", list(
             stop('ggplot2 package required to render ggplot2 objects. Install it with `install.packages("ggplot2")`')
           }
           filename <- tempfile(pattern = "twitter_plot_", fileext = ".png")
-          dpi <- 150
+          dpi <- 72
           ggplot2::ggsave(plot = m, filename = filename,
                           width = 1024/dpi,
                           height = 512/dpi, dpi = dpi)
