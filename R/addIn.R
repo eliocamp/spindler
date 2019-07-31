@@ -16,7 +16,7 @@ png_from_clipboard <- function() {
   } else {
     # Linux
     targets <- try(system("xclip -selection clipboard -t TARGETS -o", intern = TRUE), silent = TRUE)
-    if (inherits(target, "try-error")) {
+    if (inherits(targets, "try-error")) {
       warning("Clipboard on X11 requires 'xclip'.")
     }
 
