@@ -151,41 +151,20 @@ thread <- R6::R6Class("tweeter_thread", list(
 
 
   add_post = function(status, media = NULL) {
-
     # render all media
     if (is.null(media)) {
       media <- NA  # NAs work better for storage
     } else {
-      if (inherits(media, c("ggplot", "gganim"))) {
+      if (inherits(media, c("ggplot", "gganim", "R6"))) {
         media <- list(media)
       }
+
+      # Render items
+      media <- vapply(media, spindler_render, "char")
+
+      # Normalize paths and check that files exist
       media <- vapply(media, function(m) {
-        # Render plot if needed
-        #
-        if (inherits(m, "gganim"))  {
-          if (!requireNamespace("gganimate", quietly = TRUE)) {
-            stop('gganimate package required to render ggplot 2 animations. Install it with `install.packages("gganimate")`')
-          }
-          filename <- tempfile(pattern = "twitter_plot_", fileext = ".gif")
-          dpi <- 72
-          gganimate::anim_save(filename = filename, animation = m,
-                               width = 800,
-                               height = 400)
-          m <- filename
-        }
-        if (inherits(m, "ggplot")) {
-          if (!requireNamespace("ggplot2", quietly = TRUE)) {
-            stop('ggplot2 package required to render ggplot2 objects. Install it with `install.packages("ggplot2")`')
-          }
-          filename <- tempfile(pattern = "twitter_plot_", fileext = ".png")
-          dpi <- 72
-          ggplot2::ggsave(plot = m, filename = filename,
-                          width = 1024/dpi,
-                          height = 512/dpi, dpi = dpi)
-          m <- filename
-        } else {
-          m <- normalizePath(m)
-        }
+        m <- normalizePath(m)
         if (!file.exists(m)) {
           stop("No media in ", m)
         }

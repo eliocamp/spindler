@@ -21,6 +21,9 @@ Suggests:
     knitr,
     shiny,
     miniUI,
-    ggplot2
+    ggplot2,
+    gganimate,
+    rstudioapi,
+    png
 RoxygenNote: 6.1.1
 Roxygen: list(markdown = TRUE)
