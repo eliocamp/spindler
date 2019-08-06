@@ -179,7 +179,7 @@ thread <- R6::R6Class("tweeter_thread", list(
     # Each status is one post and contains all media
     for (s in seq_along(status)) {
 
-      if (!is_tweet_length(status[s])) {
+      if (is_tweet_length(status[s])) {
         stop("Status longer than 280 characters:\n  * ", substr(status, 1, 140), "...")
       }
 
@@ -205,6 +205,7 @@ thread <- R6::R6Class("tweeter_thread", list(
       message("Nothing to publish.")
       return(invisible(self))
     }
+    fix_rtweet()
 
     for (p in seq_len(nrow(self$posts))) {
       # browser()
@@ -350,8 +351,10 @@ is_tweet_length <- function(.x, n = 280) {
   while (grepl("^@\\S+\\s+", .x)) {
     .x <- sub("^@\\S+\\s+", "", .x)
   }
-  nchar(.x) <= n
+  !(nchar(.x) <= n)   # with fix
 }
+
+
 
 
 #' Load all saved threads.
@@ -393,4 +396,16 @@ saved_threads <- function() {
 # new_thread <- function(tag = NULL) {
 #   thread$new(tag = tag)
 # }
+
+
+fix_rtweet <- function() {
+  original_fun <- "{\n.x <- gsub(\"https?://[[:graph:]]+\\\\s?\", \"\", .x)\nwhile (grepl(\"^@\\\\S+\\\\s+\", .x)) {\n    .x <- sub(\"^@\\\\S+\\\\s+\", \"\", .x)\n}\nnchar(.x) <= n"
+
+  now_fun <- paste0(as.character(body(getFromNamespace("is_tweet_length", ns = "rtweet"))),
+                         collapse = "\n")
+  if (now_fun == original_fun) {
+    library(rtweet)
+    assignInNamespace("is_tweet_length", is_tweet_length, ns = "rtweet")
+  }
+}
 
