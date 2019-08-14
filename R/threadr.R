@@ -150,17 +150,18 @@ thread <- R6::R6Class("tweeter_thread", list(
   },
 
 
-  add_post = function(status, media = NULL) {
+  add_post = function(status, media = NULL, ...) {
     # render all media
     if (is.null(media)) {
       media <- NA  # NAs work better for storage
     } else {
-      if (inherits(media, c("ggplot", "gganim", "R6"))) {
+      # browser()
+      if (inherits(media, c("ggplot", "gganim", "R6", "gtable"))) {
         media <- list(media)
       }
 
       # Render items
-      media <- vapply(media, spindler_render, "char")
+      media <- vapply(media, function(x) spindler_render(x, ...), "char")
 
       # Normalize paths and check that files exist
       media <- vapply(media, function(m) {
