@@ -206,7 +206,7 @@ thread <- R6::R6Class("tweeter_thread", list(
       message("Nothing to publish.")
       return(invisible(self))
     }
-    fix_rtweet()
+    # fix_rtweet()
 
     for (p in seq_len(nrow(self$posts))) {
       # browser()
@@ -405,8 +405,11 @@ fix_rtweet <- function() {
   now_fun <- paste0(as.character(body(getFromNamespace("is_tweet_length", ns = "rtweet"))),
                          collapse = "\n")
   if (now_fun == original_fun) {
+
+    message("fixing")
     library(rtweet)
     assignInNamespace("is_tweet_length", is_tweet_length, ns = "rtweet")
+    message("fixed")
   }
 }
 
