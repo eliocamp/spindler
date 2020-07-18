@@ -1,6 +1,6 @@
 #' @export
 last_call <- function(max.lookback=100L){
-  # from https://github.com/mrdwab/overflow-mrdwab/blob/master/R/solast.R
+  #from https://github.com/mrdwab/overflow-mrdwab/blob/master/R/solast.R
   if(
     !is.numeric(max.lookback) || length(max.lookback) != 1L ||
     is.na(max.lookback) || max.lookback < 0L
