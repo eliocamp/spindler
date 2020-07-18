@@ -6,7 +6,7 @@
 \alias{spindler-package}
 \title{spindler: Create and Publish Twitter Threads}
 \description{
-\if{html}{\figure{logo.png}{options: align='right'}}
+\if{html}{\figure{logo.png}{options: align='right' alt='logo' width='120'}}
 
 Publish Twitter threads from your R session or from a rmarkdown document.
 }
@@ -23,7 +23,7 @@ All you need to know is on the \link{thread} object.
 }
 
 \author{
-\strong{Maintainer}: Elio Campitelli \email{elio.campitelli@cima.fcen.uba.ar} (0000-0002-7742-9230)
+\strong{Maintainer}: Elio Campitelli \email{elio.campitelli@cima.fcen.uba.ar} (\href{https://orcid.org/0000-0002-7742-9230}{ORCID})
 
 }
 \keyword{internal}

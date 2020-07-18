@@ -11,7 +11,6 @@
 \alias{show_media}
 \alias{preview}
 \alias{$}
-\alias{add_whatermark}
 \title{Twitter thread}
 \usage{
 thread$new(tag = NULL)
@@ -22,7 +21,7 @@ thread$browse(n = 1)
 thread$get_url(n = 1)
 thread$get_posts()
 thread$destroy()
-thread$add_whatermark(lang = "en")
+thread$add_whatermark()
 thread$preview()
 thread$show_media(n)
 
@@ -41,8 +40,6 @@ to populate the thread (see Examples.)}
 
 \item{which}{Numeric indicating which thread to load. Negative values mean reverse
 counting (i.e. n = -1 loads the latests thread, n = -2,the one before and so on.)}
-
-\item{lang}{Language of the watermark. Currently "en" (English) or "es" (Spanish).}
 }
 \description{
 Creates a twitter thread object that can be populated with posts, published and destroyed.
@@ -70,10 +67,10 @@ The \code{thread$add_watermark()} method adds this post:
 
 This thread comes to you courtesy of the spindler {package emoji} \cr
 Reproducible tweets with R and rmarkdown. \cr
-#rstats \cr
+\#rstats \cr
 https://git.io/fjzxN
 
-If you like the package, consider adding it so more people can enjoy it :).
+If you like the package, consider adding it so more people can enjoy it :\).
 
 You can save your threads for later use with \code{thread$save()}. It will write the
 thread object to disk so you can retrieve it later. Saved posts can be retrieved
