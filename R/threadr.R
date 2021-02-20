@@ -206,8 +206,7 @@ thread <- R6::R6Class("tweeter_thread", list(
       return(invisible(self))
     }
     # fix_rtweet()
-
-    for (p in seq_along(self$posts)) {
+    for (p in seq_len(nrow(self$posts))) {
       if (p == 1) {
         prev_status <- NULL
       } else {
@@ -216,12 +215,11 @@ thread <- R6::R6Class("tweeter_thread", list(
       media <- unlist(self$posts$media[p])
       if (is.na(media)[1]) media <- NULL
 
-      rtweet::post_tweet(status = self$posts$status[p],
+      posted <- rtweet::post_tweet(status = self$posts$status[p],
                          media = media,
                          in_reply_to_status_id = prev_status,
                          auto_populate_reply_metadata = TRUE)
-      my_timeline <- rtweet::get_timeline(rtweet:::home_user())
-      self$posts$id[p] <-  my_timeline$status_id[1]
+      self$posts$id[p] <- httr::content(posted)$id_str
     }
 
     invisible(self)

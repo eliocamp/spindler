@@ -16,7 +16,8 @@ Imports:
     rtweet,
     R6,
     stringi,
-    rappdirs
+    rappdirs,
+    httr
 Suggests: 
     knitr,
     shiny,
