@@ -42,12 +42,13 @@ thread_show <- function(thread) {
   }
 
   posts <- thread$get_posts()
+
   avatar <- get_user_avatar()
   posts_divs <- lapply(seq_len(nrow(posts)), function(p) status_card(posts[p, ], avatar, p))
   ui <- miniUI::miniPage(
     miniUI::gadgetTitleBar("Thread", right = miniUI::miniTitleBarButton("publish", "Publish Thread", primary = TRUE)),
-    miniUI::miniContentPanel( padding = 20,
-                              posts_divs
+    miniUI::miniContentPanel(padding = 20,
+                             posts_divs
     )
   )
 

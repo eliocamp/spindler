@@ -1,6 +1,6 @@
 Package: spindler
 Type: Package
-Title: Create and Publish Twitter Threads
+Title: Create and Publish Mastodon and Twitter Threads
 Version: 0.1.0.9000
 Authors@R: 
     c(person(given = "Elio",
@@ -8,7 +8,8 @@ Authors@R:
            role = c("cre", "aut"),
            email = "elio.campitelli@cima.fcen.uba.ar",
            comment = c(ORCID = "0000-0002-7742-9230")))
-Description: Publish Twitter threads from your R session or from a rmarkdown document. 
+Description: Publish Mastodon and Twitter threads from your R session or from an 
+rmarkdown document. 
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
@@ -26,5 +27,5 @@ Suggests:
     gganimate,
     rstudioapi,
     png
-RoxygenNote: 7.1.1
+RoxygenNote: 7.2.3
 Roxygen: list(markdown = TRUE)

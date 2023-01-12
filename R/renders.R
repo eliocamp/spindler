@@ -53,7 +53,6 @@ spindler_render.ggplot <- function(object, width = 1024/dpi, height = 512/dpi, d
 
 #' @export
 spindler_render.gtable <- function(object, ...) {
-  # browser()
   spindler_render.ggplot(object, ...)
 }
 
